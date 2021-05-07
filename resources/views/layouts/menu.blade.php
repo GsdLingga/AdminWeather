@@ -13,7 +13,7 @@
     <div class="shadow-bottom"></div>
     <div class="main-menu-content">
         <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
-            <li class=" nav-item active"><a href="/home"><i class="feather icon-home"></i><span class="menu-title" data-i18n="Dashboard">Dashboard</span></a>
+            <li class=" nav-item {{ request()->is('home') ? 'active' : '' }}"><a href="/home"><i class="feather icon-home"></i><span class="menu-title" data-i18n="Dashboard">Dashboard</span></a>
                 {{-- <ul class="menu-content">
                     <li class="active"><a href="dashboard-analytics.html"><i class="feather icon-circle"></i><span class="menu-item" data-i18n="Analytics">Analytics</span></a>
                     </li>
@@ -21,7 +21,7 @@
                     </li>
                 </ul> --}}
             </li>
-            <li class=" nav-item"><a href="/perangkat"><i class="feather icon-cpu"></i><span class="menu-title" data-i18n="Email">Perangkat</span></a>
+            <li class=" nav-item {{ request()->is('perangkat') ? 'active' : '' }}"><a href="/perangkat"><i class="feather icon-cpu"></i><span class="menu-title" data-i18n="Email">Perangkat</span></a>
             </li>
             {{-- <li class=" navigation-header"><span>Apps</span>
             </li>

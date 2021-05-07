@@ -28,3 +28,4 @@ Auth::routes([
   ]);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/perangkat', [App\Http\Controllers\PerangkatController::class, 'index'])->name('perangkat');
