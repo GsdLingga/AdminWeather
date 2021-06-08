@@ -13,6 +13,6 @@ class Device extends Model
     protected $primarykey = 'id';
     public $timestamps = false;
     protected $fillable = [
-        'nama_device', 'tipe_device'
+        'nama_device', 'tipe_device', 'status'
     ];
 }

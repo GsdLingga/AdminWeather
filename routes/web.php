@@ -28,4 +28,7 @@ Auth::routes([
   ]);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/perangkat', [App\Http\Controllers\PerangkatController::class, 'index'])->name('perangkat');
+// Route::get('/perangkat', [App\Http\Controllers\PerangkatController::class, 'index'])->name('perangkat');
+Route::resource('/perangkat', 'App\Http\Controllers\PerangkatController');
+Route::get('/statistik/{id}', [App\Http\Controllers\HomeController::class, 'statistik'])->name('statistik');
+Route::get('/statistik/update/{id}', [App\Http\Controllers\HomeController::class, 'updateChart'])->name('updateChart');

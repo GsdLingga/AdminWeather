@@ -24,7 +24,7 @@ class PerangkatController extends Controller
      */
     public function index()
     {
-        $device = Device::get();
+        $device = Device::where('status', '1')->get();
 
         // return $device;
         return view('perangkat', compact('device'));
@@ -48,7 +48,15 @@ class PerangkatController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nama_device' => ['required', 'string', 'max:255'],
+            'tipe_device' => ['required', 'string'],
+        ]);
+
+        $device = Device::updateOrCreate(['id' => $request->device_id],
+        ['nama_device' => $request->nama_device, 'tipe_device' => $request->tipe_device, 'status' => "1"]);
+        
+        return response()->json(['code'=>200, 'message'=>'Device Created successfully','data' => $device], 200);
     }
 
     /**
@@ -59,7 +67,9 @@ class PerangkatController extends Controller
      */
     public function show($id)
     {
-        //
+        $device = Device::find($id);
+
+        return response()->json($device);
     }
 
     /**
@@ -80,9 +90,13 @@ class PerangkatController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update($id)
     {
-        //
+        $device = Device::find($id);
+        $device->status = "0";
+        $device->save();
+     
+        return response()->json(['success'=>'Device deleted successfully']);
     }
 
     /**
