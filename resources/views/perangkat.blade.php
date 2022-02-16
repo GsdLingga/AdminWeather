@@ -80,6 +80,7 @@
                                         <thead>
                                             <tr>
                                                 <th>No</th>
+                                                <th>Id Perangkat</th>
                                                 <th>Nama Perangkat</th>
                                                 <th>Tipe Perangkat</th>
                                                 <th>Action</th>
@@ -89,6 +90,7 @@
                                             @for ($i = 0; $i < count($device); $i++)
                                             <tr id="row_{{$device[$i]->id}}">
                                                 <td>{{ $i+1}}</td>
+                                                <td>{{ $device[$i]->id}}</td>
                                                 <td>{{ $device[$i]->nama_device}}</td>
                                                 <td>@if ($device[$i]->tipe_device == "pendeteksi_banjir")
                                                         Pendeteksi Banjir
@@ -261,8 +263,9 @@
                         if(response.code == 200) {
 
                         if(id != ""){
-                            $("#row_"+id+" td:nth-child(2)").html(response.data.nama_device);
-                            $("#row_"+id+" td:nth-child(3)").html(response.data.tipe_device);
+                            $("#row_"+id+" td:nth-child(2)").html(response.data.id);
+                            $("#row_"+id+" td:nth-child(3)").html(response.data.nama_device);
+                            $("#row_"+id+" td:nth-child(4)").html(response.data.tipe_device);
 
                             // location.reload(true);
                         } else {
@@ -270,7 +273,7 @@
                             // $('table tbody').prepend('<tr id="row_'+response.data.id+'"><td>'+response.data.id+'</td><td>'+response.data.name+'</td><td>'+response.data.email+'</td><td>'+response.data.is_admin+'</td><td><a href="javascript:void(0)" data-id="'+response.data.id+'" class="btn btn-danger" onclick="deleteAccount(event.target)">Delete</a></td></tr>');
 
                             // $('table tfoot').prepend('<tr id="row_'+response.data.id+'"><td>'+response.data.id+'</td><td>'+response.data.name+'</td><td>'+response.data.email+'</td><td>'+response.data.is_admin+'</td><td><a href="javascript:void(0)" data-id="'+response.data.id+'" onclick="editAccount(event.target)" class="btn btn-info">Edit</a><a href="javascript:void(0)" data-id="'+response.data.id+'" class="btn btn-danger" onclick="deleteAccount(event.target)">Delete</a></td></tr>');
-                            $('table tfoot').prepend('<tr id="row_'+response.data.id+'"><td></td><td>'+response.data.nama_device+'</td><td>'+response.data.tipe_device+'</td><td><a href="javascript:void(0)" data-id="'+response.data.id+'" onclick="editDevice(event.target)" class="btn btn-info">Edit</a><a href="javascript:void(0)" data-id="'+response.data.id+'" class="btn btn-danger" onclick="deleteDevice(event.target)">Delete</a></td></tr>');
+                            $('table tfoot').prepend('<tr id="row_'+response.data.id+'"><td></td><td>'+response.data.id+'</td><td>'+response.data.nama_device+'</td><td>'+response.data.tipe_device+'</td><td><a href="javascript:void(0)" data-id="'+response.data.id+'" onclick="editDevice(event.target)" class="btn btn-info">Edit</a><a href="javascript:void(0)" data-id="'+response.data.id+'" class="btn btn-danger" onclick="deleteDevice(event.target)">Delete</a></td></tr>');
                         }
                         $('#nama_device').val('');
                         $('#tipe_device').val('');

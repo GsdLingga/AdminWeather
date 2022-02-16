@@ -117,7 +117,7 @@
                     </div>
                 </div>
 
-                {{-- <div class="col-lg-6 col-md-12">
+                <div class="col-lg-6 col-md-12">
                     <div class="card">
                         <div class="card-header">
                             <h4 class="card-title">Hujan</h4>
@@ -128,7 +128,7 @@
                             </div>
                         </div>
                     </div>
-                </div> --}}
+                </div>
 
             </div>
         </section>
@@ -147,7 +147,6 @@
 
     @if ($device->tipe_device == "pendeteksi_banjir")
         <script>
-            var id = {!! json_encode($device->id) !!};
             // var chartair = {!! json_encode($air) !!};
             // // var jarak_air = [];
             // var suhu = [];
@@ -199,7 +198,15 @@
                     }
                 },
                 xaxis: {
-                    categories: []
+                    categories: [],
+                    labels: {
+                        show: false
+                    }
+                },
+                yaxis:{
+                    title: {
+                        text: 'Centimeter (cm)'
+                    }
                 }
             });
 
@@ -210,7 +217,7 @@
                 chart: {
                     type: 'area'
                 },
-                colors: ['#1998cf'],
+                colors: ['#ffcc00'],
                 stroke: {
                     curve: 'smooth'
                 },
@@ -231,7 +238,15 @@
                     }
                 },
                 xaxis: {
-                    categories: []
+                    categories: [],
+                    labels: {
+                        show: false
+                    }
+                },
+                yaxis:{
+                    title: {
+                        text: 'Celcius (°C)'
+                    }
                 }
             });
 
@@ -242,7 +257,7 @@
                 chart: {
                     type: 'area'
                 },
-                colors: ['#1998cf'],
+                colors: ['#59afda'],
                 stroke: {
                     curve: 'smooth'
                 },
@@ -263,7 +278,15 @@
                     }
                 },
                 xaxis: {
-                    categories: []
+                    categories: [],
+                    labels: {
+                        show: false
+                    }
+                },
+                yaxis:{
+                    title: {
+                        text: 'Relative Humidity (% RH)'
+                    }
                 }
             });
 
@@ -295,15 +318,59 @@
                     }
                 },
                 xaxis: {
-                    categories: []
+                    categories: [],
+                    labels: {
+                        show: false
+                    }
+                },
+                yaxis:{
+                    title: {
+                        text: 'Lux (lx)'
+                    }
                 }
             });
 
             chartIntensitasCahaya.render();
 
+            var optionsHujan = document.querySelector("#hujan");
+            var chartHujan= new ApexCharts(optionsHujan, {
+                chart: {
+                    type: 'area'
+                },
+                colors: ['#9aafc5'],
+                stroke: {
+                    curve: 'smooth'
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                series: [{
+                    name: 'Hujan',
+                    data: []
+                }],
+                fill: {
+                    type: "gradient",
+                    gradient: {
+                    shadeIntensity: 1,
+                    opacityFrom: 0.7,
+                    opacityTo: 0.9,
+                    stops: [0, 90, 100]
+                    }
+                },
+                xaxis: {
+                    categories: [],
+                    labels: {
+                        show: false
+                    }
+                }
+            });
+
+            chartHujan.render();
+
             var updateChart = function() {
+                var id = {!! json_encode($device->id) !!};
                 $.ajax({
-                    url: "/statistik/update/1",
+                    url: "/statistik/update/"+ id +"",
                     type: 'GET',
                     dataType: 'json',
                     headers: {
@@ -342,6 +409,15 @@
                         chartIntensitasCahaya.updateOptions({
                             series: [{
                                 data: response.cahaya_air
+                            }],
+                            xaxis: {
+                                categories: response.interval_air
+                            } 
+                        });
+
+                        chartHujan.updateOptions({
+                            series: [{
+                                data: response.hujan_air
                             }],
                             xaxis: {
                                 categories: response.interval_air
@@ -393,30 +469,11 @@
             // chartHujan.render();
 
         </script>
+
     @elseif($device->tipe_device == "pendeteksi_angin")
         <script>
-            var chartangin = {!! json_encode($angin) !!};
-            var kecepatan_angin = [];
-            var suhu = [];
-            var kelembaban = [];
-            var intensitas_cahaya = [];
-            var hujan = [];
-            var interval = [];
-
-            for (let i = 0; i < chartangin.length; i++) {
-                // const element = array[index];
-                kecepatan_angin.push(chartangin[i].kecepatan_angin);
-                suhu.push(chartangin[i].suhu);
-                kelembaban.push(chartangin[i].kelembaban);
-                intensitas_cahaya.push(chartangin[i].intensitas_cahaya);
-                hujan.push(chartangin[i].hujan);
-                interval.push(chartangin[i].interval);
-            }
-            // console.log(jarak_air);
-            // console.log(interval);
-            // console.log(suhu);
-
-            var optionsAngin = {
+            var optionsAngin = document.querySelector("#angin");
+            var chartAngin = new ApexCharts(optionsAngin, {
                 chart: {
                     type: 'area'
                 },
@@ -429,8 +486,12 @@
                 },
                 series: [{
                     name: 'Kecepatan Angin',
-                    data: kecepatan_angin
+                    data: []
                 }],
+                legend: {
+                    show: true,
+                    position: 'bottom'
+                },
                 fill: {
                     type: "gradient",
                     gradient: {
@@ -441,19 +502,26 @@
                     }
                 },
                 xaxis: {
-                    categories: interval
+                    categories: [],
+                    labels: {
+                        show: false,
+                    }
+                },
+                yaxis:{
+                    title: {
+                        text: 'meter per detik (m/s)'
+                    }
                 }
-            }
-
-            var chartAngin = new ApexCharts(document.querySelector("#angin"),optionsAngin);
+            });
 
             chartAngin.render();
 
-            var optionsSuhu = {
+            var optionsSuhu = document.querySelector("#suhu");
+            var chartSuhu = new ApexCharts(optionsSuhu, {
                 chart: {
                     type: 'area'
                 },
-                colors: ['#1998cf'],
+                colors: ['#ffcc00'],
                 stroke: {
                     curve: 'smooth'
                 },
@@ -462,7 +530,7 @@
                 },
                 series: [{
                     name: 'Suhu',
-                    data: suhu
+                    data: []
                 }],
                 fill: {
                     type: "gradient",
@@ -474,19 +542,26 @@
                     }
                 },
                 xaxis: {
-                    categories: interval
+                    categories: [],
+                    labels: {
+                        show: false
+                    }
+                },
+                yaxis:{
+                    title: {
+                        text: 'Celcius (°C)'
+                    }
                 }
-            }
-
-            var chartSuhu = new ApexCharts(document.querySelector("#suhu"),optionsSuhu);
+            });
 
             chartSuhu.render();
 
-            var optionsKelembaban = {
+            var optionsKelembaban = document.querySelector("#kelembaban");
+            var chartKelembaban= new ApexCharts(optionsKelembaban, {
                 chart: {
                     type: 'area'
                 },
-                colors: ['#1998cf'],
+                colors: ['#59afda'],
                 stroke: {
                     curve: 'smooth'
                 },
@@ -495,7 +570,7 @@
                 },
                 series: [{
                     name: 'Kelembaban',
-                    data: kelembaban
+                    data: []
                 }],
                 fill: {
                     type: "gradient",
@@ -507,19 +582,26 @@
                     }
                 },
                 xaxis: {
-                    categories: interval
+                    categories: [],
+                    labels: {
+                        show: false
+                    }
+                },
+                yaxis:{
+                    title: {
+                        text: 'Relative Humidity (% RH)'
+                    }
                 }
-            }
-
-            var chartKelembaban = new ApexCharts(document.querySelector("#kelembaban"),optionsKelembaban);
+            });
 
             chartKelembaban.render();
 
-            var optionsIntensitasCahaya = {
+            var optionsIntensitasCahaya = document.querySelector("#intensitas_cahaya");
+            var chartIntensitasCahaya= new ApexCharts(optionsIntensitasCahaya, {
                 chart: {
                     type: 'area'
                 },
-                colors: ['#1998cf'],
+                colors: ['#ebe838'],
                 stroke: {
                     curve: 'smooth'
                 },
@@ -528,7 +610,7 @@
                 },
                 series: [{
                     name: 'Intensitas Cahaya',
-                    data: intensitas_cahaya
+                    data: []
                 }],
                 fill: {
                     type: "gradient",
@@ -540,13 +622,120 @@
                     }
                 },
                 xaxis: {
-                    categories: interval
+                    categories: [],
+                    labels: {
+                        show: false
+                    }
+                },
+                yaxis:{
+                    title: {
+                        text: 'Lux (lx)'
+                    }
                 }
-            }
-
-            var chartIntensitasCahaya = new ApexCharts(document.querySelector("#intensitas_cahaya"),optionsIntensitasCahaya);
+            });
 
             chartIntensitasCahaya.render();
+
+            var optionsHujan = document.querySelector("#hujan");
+            var chartHujan= new ApexCharts(optionsHujan, {
+                chart: {
+                    type: 'area'
+                },
+                colors: ['#9aafc5'],
+                stroke: {
+                    curve: 'smooth'
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                series: [{
+                    name: 'Hujan',
+                    data: []
+                }],
+                fill: {
+                    type: "gradient",
+                    gradient: {
+                    shadeIntensity: 1,
+                    opacityFrom: 0.7,
+                    opacityTo: 0.9,
+                    stops: [0, 90, 100]
+                    }
+                },
+                xaxis: {
+                    categories: [],
+                    labels: {
+                        show: false
+                    }
+                }
+            });
+
+            chartHujan.render();
+
+            var updateChart = function() {
+                var id = {!! json_encode($device->id) !!};
+                $.ajax({
+                    url: "/statistik/update/"+ id +"",
+                    type: 'GET',
+                    dataType: 'json',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+                        chartAngin.updateOptions({
+                            series: [{
+                                data: response.kecepatan_angin
+                            }],
+                            xaxis: {
+                                categories: response.interval_angin
+                            } 
+                        });
+
+                        chartSuhu.updateOptions({
+                            series: [{
+                                data: response.suhu_angin
+                            }],
+                            xaxis: {
+                                categories: response.interval_angin
+                            } 
+                        });
+
+                        chartKelembaban.updateOptions({
+                            series: [{
+                                data: response.kelembaban_angin
+                            }],
+                            xaxis: {
+                                categories: response.interval_angin
+                            } 
+                        });
+
+                        chartIntensitasCahaya.updateOptions({
+                            series: [{
+                                data: response.cahaya_angin
+                            }],
+                            xaxis: {
+                                categories: response.interval_angin
+                            } 
+                        });
+
+                        chartHujan.updateOptions({
+                            series: [{
+                                data: response.hujan_angin
+                            }],
+                            xaxis: {
+                                categories: response.interval_angin
+                            } 
+                        });
+                    },
+                    error: function(response){
+                        console.log(response);
+                    }
+                });
+            }
+
+            updateChart();
+            setInterval(() => {
+                updateChart();
+            }, 3000);
 
             // var optionsHujan = {
             //     chart: {
