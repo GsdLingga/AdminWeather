@@ -2,7 +2,7 @@
 @section('title', 'Statistik')
 @push('css')
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/charts/apexcharts.css">
+    <link rel="stylesheet" type="text/css" href="{{asset('app-assets/vendors/css/charts/apexcharts.css')}}">
 @endpush
 @section('content')
     <div class="content-header row">
@@ -138,11 +138,11 @@
 @endsection
 @push('js')
     <!-- BEGIN: Page Vendor JS-->
-    <script src="../../../app-assets/vendors/js/charts/apexcharts.min.js"></script>
+    <script src="{{asset('app-assets/vendors/js/charts/apexcharts.min.js')}}"></script>
     <!-- END: Page Vendor JS-->
     
     <!-- BEGIN: Page JS-->
-    <script src="../../../app-assets/js/scripts/charts/chart-apex.js"></script>
+    <script src="{{asset('app-assets/js/scripts/charts/chart-apex.js')}}"></script>
     <!-- END: Page JS-->
 
     @if ($device->tipe_device == "pendeteksi_banjir")
